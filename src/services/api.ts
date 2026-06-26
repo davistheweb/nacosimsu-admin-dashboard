@@ -2,13 +2,15 @@ import axios, {
   AxiosError,
   AxiosResponse,
   InternalAxiosRequestConfig,
-} from 'axios'
-import Cookies from 'js-cookie'
-import { headersConfig, timeoutConfig } from './httpConfig'
-import { deleteAccessBearerToken, getAccessToken } from './server'
+} from "axios";
+import Cookies from "js-cookie";
+import { headersConfig, timeoutConfig } from "./httpConfig";
+import { deleteAccessBearerToken, getAccessToken } from "./server";
+
+const authPath = ["/account-recovery", "/login"];
 
 const API_BASE_URL: string | undefined = process.env
-  .NEXT_PUBLIC_API_BASE_URL as string
+  .NEXT_PUBLIC_API_BASE_URL as string;
 
 export const API = axios.create({
   baseURL: API_BASE_URL,
@@ -17,7 +19,7 @@ export const API = axios.create({
     ...headersConfig,
   },
   ...timeoutConfig,
-})
+});
 
 /**
  * @async
@@ -32,68 +34,74 @@ export const API = axios.create({
 const get_bearer_token = async () => {
   if (
     typeof window !== undefined &&
-    window.location.pathname.startsWith('/auth')
+    window.location.pathname.startsWith("/auth")
   )
-    return undefined
-  const cachedToken = Cookies.get('cached_bearer_token')
+    return undefined;
+  const cachedToken = Cookies.get("cached_bearer_token");
 
-  if (cachedToken) return cachedToken
+  if (cachedToken) return cachedToken;
 
-  const token = await getAccessToken()
+  const token = await getAccessToken();
 
-  const now = new Date()
+  const now = new Date();
 
   const cachedBearerTokenExpirationTime = new Date(
     now.getTime() + 20 * 60 * 1000,
-  )
+  );
 
-  if (!token) Cookies.remove('cached_bearer_token', { path: '/' })
+  if (!token) Cookies.remove("cached_bearer_token", { path: "/" });
 
   if (token !== undefined)
-    Cookies.set('cached_bearer_token', token, {
+    Cookies.set("cached_bearer_token", token, {
       expires: cachedBearerTokenExpirationTime,
-      path: '/',
+      path: "/",
       secure: true,
-      sameSite: 'strict',
-    })
+      sameSite: "strict",
+    });
 
-  return token
-}
+  return token;
+};
 
 API.interceptors.request.use(
   async (
     config: InternalAxiosRequestConfig,
   ): Promise<InternalAxiosRequestConfig> => {
-    const bearer_token = await get_bearer_token()
+    const bearer_token = await get_bearer_token();
 
     if (bearer_token !== undefined) {
-      config.headers.Authorization = `Bearer ${bearer_token}`
+      config.headers.Authorization = `Bearer ${bearer_token}`;
     }
-    return config
+    return config;
   },
   (error: AxiosError) => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
 
 API.interceptors.response.use(
   async (response: AxiosResponse): Promise<AxiosResponse> => {
-    return response
+    console.log(response);
+
+    return response;
   },
   async (error: AxiosError) => {
-    if (error.response && error.response.status === 401) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !authPath.includes(window.location.pathname)
+    ) {
       await deleteAccessBearerToken().then(() => {
-        if (typeof window !== 'undefined') {
-          localStorage.clear()
-          Cookies.remove('cached_bearer_token', { path: '/' })
-          window.location.reload()
+        if (typeof window !== "undefined") {
+          localStorage.clear();
+          Cookies.remove("cached_bearer_token", { path: "/" });
+          window.location.reload();
         }
-      })
-      return Promise.reject(error)
+      });
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
 
-export default API
+export default API;

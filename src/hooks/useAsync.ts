@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback } from "react";
 
 interface UseAsyncState<T> {
-  data: T | null
-  loading: boolean
-  error: Error | null
+  data: T | null;
+  loading: boolean;
+  error: Error | null;
 }
 
 export function useAsync<T>(asyncFunction: () => Promise<T>) {
@@ -11,20 +11,20 @@ export function useAsync<T>(asyncFunction: () => Promise<T>) {
     data: null,
     loading: false,
     error: null,
-  })
+  });
 
   const execute = useCallback(async () => {
-    setState({ data: null, loading: true, error: null })
+    setState({ data: null, loading: true, error: null });
     try {
-      const response = await asyncFunction()
-      setState({ data: response, loading: false, error: null })
-      return response
+      const response = await asyncFunction();
+      setState({ data: response, loading: false, error: null });
+      return response;
     } catch (error) {
-      const err = error instanceof Error ? error : new Error(String(error))
-      setState({ data: null, loading: false, error: err })
-      throw err
+      const err = error instanceof Error ? error : new Error(String(error));
+      setState({ data: null, loading: false, error: err });
+      throw err;
     }
-  }, [asyncFunction])
+  }, [asyncFunction]);
 
-  return { ...state, execute }
+  return { ...state, execute };
 }

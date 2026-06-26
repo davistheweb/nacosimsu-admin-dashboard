@@ -48,6 +48,7 @@ export function EventForm({ event, isEdit }: EventFormProps) {
           date: normalizeDate(event.date),
           time: normalizeTime(event.time),
           event_type: event.event_type,
+          status: event.status,
           presented_by: event.presented_by,
           hosted_by: event.hosted_by,
           host_contact: event.host_contact,
@@ -60,6 +61,7 @@ export function EventForm({ event, isEdit }: EventFormProps) {
           date: "",
           time: "",
           event_type: "virtual",
+          status: "draft",
           presented_by: "",
           hosted_by: "",
           host_contact: "",
@@ -323,22 +325,40 @@ export function EventForm({ event, isEdit }: EventFormProps) {
           )}
         </div>
       </div>
-
-      <div className="space-y-1">
-        <label htmlFor="host_contact" className="text-sm font-medium">
-          Host Contact
-        </label>
-        <Input
-          id="host_contact"
-          placeholder="Enter host contact"
-          disabled={isSaving}
-          {...register("host_contact")}
-        />
-        {errors.host_contact && (
-          <p className="text-sm text-destructive">
-            {errors.host_contact.message}
-          </p>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <label htmlFor="status" className="text-sm font-medium">
+            Event Status
+          </label>
+          <select
+            id="status"
+            disabled={isSaving}
+            className="h-10 w-full rounded-lg border border-input bg-background px-3 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+            {...register("status")}
+          >
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+          {errors.status && (
+            <p className="text-sm text-destructive">{errors.status.message}</p>
+          )}
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="host_contact" className="text-sm font-medium">
+            Host Contact
+          </label>
+          <Input
+            id="host_contact"
+            placeholder="Enter host contact"
+            disabled={isSaving}
+            {...register("host_contact")}
+          />
+          {errors.host_contact && (
+            <p className="text-sm text-destructive">
+              {errors.host_contact.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="flex gap-4">

@@ -1,40 +1,40 @@
 export interface LoginRequest {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface LoginResponse {
-  token: string
+  token: string;
   user: {
-    id: string
-    email: string
-    name: string
-  }
+    id: string;
+    email: string;
+    name: string;
+  };
 }
 
 export interface ForgotPasswordRequest {
-  email: string
+  email: string;
 }
 
 export interface ForgotPasswordResponse {
-  message: string
+  message: string;
 }
 
 export interface VerifyOTPRequest {
-  email: string
-  otp: string
+  email: string;
+  otp: string;
 }
 
 export interface VerifyOTPResponse {
-  token: string
+  token: string;
 }
 
 export interface ResetPasswordRequest {
-  token: string
-  password: string
-  confirmPassword: string
+  token: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface ResetPasswordResponse {
-  message: string
+  message: string;
 }

@@ -32,12 +32,18 @@ export function LoginForm() {
       // Set the token in httpOnly cookie via API response
       // The API should set the cookie header
       toast.success("Login successful!");
-      setCookie(response.token);
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem("nacosimsu.user_name", response.user.name);
-      }
-      router.push(ROUTES.DASHBOARD);
+      setCookie(response.token).then(() => {
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(
+            "nacosimsu.user_name",
+            response.user.name,
+          );
+          window.location.reload();
+        }
+      });
     } catch (error) {
+      console.log(error);
+
       const message =
         error instanceof Error
           ? error.message

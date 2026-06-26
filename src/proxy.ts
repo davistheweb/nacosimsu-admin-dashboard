@@ -21,12 +21,8 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const pathname = request.nextUrl.pathname;
 
-  const isProtectedRoute = protectedRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`),
-  );
-  const isAuthRoute = authRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`),
-  );
+  const isProtectedRoute = protectedRoutes.some((route) => pathname === route);
+  const isAuthRoute = authRoutes.some((route) => pathname === route);
 
   if (token && isAuthRoute) {
     return NextResponse.redirect(new URL("/dashboard", request.url));

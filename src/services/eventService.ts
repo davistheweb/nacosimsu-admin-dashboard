@@ -21,6 +21,7 @@ const buildEventFormData = (
   if (data.time !== undefined) formData.append("time", data.time);
   if (data.event_type !== undefined)
     formData.append("event_type", data.event_type);
+  if (data.status !== undefined) formData.append("status", data.status);
   if (data.presented_by !== undefined)
     formData.append("presented_by", data.presented_by);
   if (data.hosted_by !== undefined)

@@ -33,7 +33,7 @@ export interface Event {
   presented_by: string;
   hosted_by: string;
   host_contact: string;
-  status: string;
+  status: "published" | "draft";
   created_by: string | number;
   created_at: string;
   updated_at: string;
@@ -60,6 +60,7 @@ export interface CreateEventRequest {
   date: string;
   time: string;
   event_type: "virtual" | "physical";
+  status: "published" | "draft";
   presented_by: string;
   hosted_by: string;
   host_contact: string;

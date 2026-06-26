@@ -89,6 +89,7 @@ export const createEventSchema = z.object({
     .min(1, "Time is required")
     .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:mm format"),
   event_type: z.enum(["virtual", "physical"] as const),
+  status: z.enum(["published", "draft"] as const),
   presented_by: z
     .string()
     .min(1, "Presented By is required")

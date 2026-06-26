@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { EventForm } from '@/components/events/event-form'
-import { ROUTES } from '@/lib/constants'
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { EventForm } from "@/components/events/event-form";
+import { ROUTES } from "@/lib/constants";
 
 export default function CreateEventPage() {
   return (
@@ -23,5 +23,5 @@ export default function CreateEventPage() {
         <EventForm />
       </div>
     </div>
-  )
+  );
 }

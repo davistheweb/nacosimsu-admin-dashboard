@@ -1,27 +1,29 @@
-'use client'
+"use client";
 
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { EventForm } from '@/components/events/event-form'
-import { SkeletonLoader } from '@/components/common/skeleton-loader'
-import { useEvent } from '@/hooks/useEvents'
-import { ROUTES } from '@/lib/constants'
-import { useParams } from 'next/navigation'
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { EventForm } from "@/components/events/event-form";
+import { SkeletonLoader } from "@/components/common/skeleton-loader";
+import { useEvent } from "@/hooks/useEvents";
+import { ROUTES } from "@/lib/constants";
+import { useParams } from "next/navigation";
 
 export default function EditEventPage() {
-  const params = useParams()
-  const slug = params.slug as string
-  const { data: event, isLoading, error } = useEvent(slug)
+  const params = useParams();
+  const slug = params.slug as string;
+  const { data: event, isLoading, error } = useEvent(slug);
 
   if (error) {
     return (
       <div className="p-8">
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
-          <p className="text-sm text-destructive">Failed to load event. Please refresh the page.</p>
+          <p className="text-sm text-destructive">
+            Failed to load event. Please refresh the page.
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -44,5 +46,5 @@ export default function EditEventPage() {
         </div>
       ) : null}
     </div>
-  )
+  );
 }

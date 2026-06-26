@@ -16,6 +16,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { authService } from "@/services/authService";
+import { deleteAccessBearerToken } from "@/services/server";
+import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const navigationItems = [
   {
@@ -57,12 +61,17 @@ export function Sidebar({ className }: { className?: string }) {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      if (typeof window !== "undefined") {
-        window.localStorage.removeItem("nacosimsu.user_name");
-      }
-      document.cookie =
-        "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      router.push(ROUTES.LOGIN);
+      authService
+        .logout()
+        .then(() => {
+          deleteAccessBearerToken().then(() => {
+            Cookies.remove("cached_bearer_token", { path: "/" });
+            window.location.reload();
+          });
+        })
+        .catch((error) => {
+          toast.error("Error during logout:", error);
+        });
     } finally {
       setIsLoggingOut(false);
     }

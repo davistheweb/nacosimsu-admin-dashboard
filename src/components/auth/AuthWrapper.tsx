@@ -46,7 +46,7 @@ export const AuthWrapper: React.FC<{
 
       <main className="-mt-20 flex h-full items-center justify-center md:mt-5 lg:items-start lg:justify-start">
         <div className="flex w-full items-center justify-center max-sm:max-w-md">
-          <Toaster richColors position="top-right" />
+          {/* <Toaster richColors position="top-right" /> */}
           <AuthFormWrapper formTitle={formTitle} formSubtitle={formSubtitle}>
             {children}
           </AuthFormWrapper>

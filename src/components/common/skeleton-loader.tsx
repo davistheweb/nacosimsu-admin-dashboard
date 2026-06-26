@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 interface SkeletonLoaderProps {
-  className?: string
-  count?: number
+  className?: string;
+  count?: number;
 }
 
 export function SkeletonLoader({ className, count = 1 }: SkeletonLoaderProps) {
@@ -12,11 +12,11 @@ export function SkeletonLoader({ className, count = 1 }: SkeletonLoaderProps) {
         <div
           key={i}
           className={cn(
-            'rounded-lg bg-muted/50 animate-pulse',
-            className || 'h-12 w-full'
+            "rounded-lg bg-muted/50 animate-pulse",
+            className || "h-12 w-full",
           )}
         />
       ))}
     </>
-  )
+  );
 }
